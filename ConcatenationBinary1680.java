@@ -27,6 +27,7 @@ public class ConcatenationBinary1680{
      public static BigInteger pow(long base,int exp){
          BigInteger sum = BigInteger.valueOf(1);
          sum = sum.shiftLeft(exp);
+         
          return sum;
      }
 
