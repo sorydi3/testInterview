@@ -2,50 +2,48 @@ import java.util.Scanner;
 
 public class Satisfiability {
 
+    private static Integer []parents;
+
     public static boolean equationsPossible(String[] equations) {
-        
-        boolean found =  false;
+        parents = new Integer[26];
 
-        int i = 0;
-        while (i<equations.length-1 && !found) {
-            if(!isBothEqual(equations[i])){
-                String curr = equations[i];
-                for (int j = i+1; j < equations.length; j++) {
-                    if(isContradiction(curr, equations[j])){
-                        found=true;
-                        break;
-                    }
-                }
+        //init parents to be parents to itselfs
+        for (int i = 0; i < parents.length; i++) {
+            parents[i]=i;
+        }
+
+        //go throught to all equations/nodes 
+        for (int i = 0; i < equations.length; i++) {
+            String equation = equations[i];
+            if(isEquality(equation)){ // check if "=="  ||| 97='a'
+                int indexval1 = getParent(equation.charAt(0)-97);  // get the index of the char in parents
+                int indexval2 = getParent(equation.charAt(3)-97);  // get the index of the char in parents
+                if(indexval1!=indexval2) parents[indexval1]=indexval2; // unify both edges
             }
-            i++;
         }
-        
-        return !found;
-    }
 
-    public static boolean isBothEqual(String curr){
-        return curr.charAt(0)==curr.charAt(curr.length()-1);
-    }
-
-    public static boolean isContradiction(String curr,String i){
-        if(isVariablesNamesEquals(curr, i)){
-            return ! curr.substring(1,2).equals(i.substring(1,2));
+        for (int i = 0; i < equations.length; i++) {
+            String equation = equations[i];
+            if(!isEquality(equation)){ // check if "!="  ||| 97='a'
+                int indexval1 = getParent(equation.charAt(0)-97);  // get the index of the char in parents
+                int indexval2 = getParent(equation.charAt(3)-97);  // get the index of the char in parents
+                if(isContradiction(indexval1,indexval2)) return false; // unify both edges
+            }
         }
-        return false;
+        return true;
     }
 
-    public static boolean isVariablesNamesEquals(String curr,String i){
+    private static int getParent(int i) {
+        if(parents[i]==i) return i;
+        return getParent(parents[i]);
+    }
 
-        /**
-         * check if the last characters of the strings are equal
-         * ex a==b && a==b yeald true similarly for b==a a==b also yield true
-         */
-        return curr.charAt(0)==i.charAt(0) && curr.charAt(curr.length()-1)==i.charAt(i.length()-1) 
-        
-        ||
+    public static boolean isEquality(String curr){
+        return curr.charAt(1)=='=';
+    }
 
-        curr.charAt(0)==i.charAt(i.length()-1) && i.charAt(0)==curr.charAt(curr.length()-1);
- 
+    public static boolean isContradiction(Integer indexval1,Integer indexval2){
+        return indexval1==indexval2;
     }
 
     public static void main(String[] args) {
