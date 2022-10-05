@@ -21,7 +21,12 @@ public class PushDominoes_838 {
                     if (rightIndex < leftIndex && rightIndex!=-1) {
                         smashRightdominos(index + 1);
                         index = rightIndex;
-                    } else {
+                    }
+                    else if(rightIndex==-1 && leftIndex==-1){
+                        smashRightdominos(index+1);
+                        index++;
+                    }
+                     else {
                         smashDominosLeftRight(index, leftIndex);
                         index = leftIndex + 1;
                     }
@@ -98,14 +103,14 @@ public class PushDominoes_838 {
     }
 
     public static void smashRightdominos(int index) {
-        if (index < 0 || arrDominoes[index] == 'R')
+        if (index > arrDominoes.length || arrDominoes[index-1] == 'R')
             return;
         else {
             char domino = arrDominoes[index];
             if (domino == '.')
                 ;
             arrDominoes[index] = 'R';
-            smashleftdominos(index + 1);
+            smashRightdominos(index + 1);
         }
     }
 
