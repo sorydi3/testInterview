@@ -27,7 +27,7 @@ public class Satisfiability {
             if(!isEquality(equation)){ // check if "!="  ||| 97='a'
                 int indexval1 = getParent(equation.charAt(0)-97);  // get the index of the char in parents
                 int indexval2 = getParent(equation.charAt(3)-97);  // get the index of the char in parents
-                if(isContradiction(indexval1,indexval2)) return false; // unify both edges
+                if(isContradiction(indexval1,indexval2)) return false; // unify both edgese
             }
         }
         return true;
